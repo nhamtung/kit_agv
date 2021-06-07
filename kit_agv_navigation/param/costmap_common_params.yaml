@@ -1,0 +1,24 @@
+# Info: http://wiki.ros.org/navigation/Tutorials/RobotSetup
+
+# Info: Khoang cach bat vat can (m)
+obstacle_range: 3.0      
+# Info: Khoang cach an toan de robot di chuyen (m)
+raytrace_range: 3.5
+
+# Info: Kich thuoc robot (tinh tu tam quay robot) - toa do 4 diem goc robot (m)
+# footprint: [[-0.105, -0.105], [-0.105, 0.105], [0.041, 0.105], [0.041, -0.105]]  (turtlebot3: burger)
+footprint: [[-0.2765, -0.305], [-0.2765, 0.305], [0.2765, 0.305], [0.2765, -0.305]]  
+# Info: Ban kinh robot (m) - (duong tron tam robot va diem xa nhat tren robot)
+# robot_radius: 0.45
+
+
+# Info: Ban kinh van cham (m)
+inflation_radius: 1.0
+cost_scaling_factor: 3.0
+# cost_scaling_factor: 1.0
+
+map_type: costmap
+# Info: Thong tin ve cam bien laser: {sensor_frame: frame_name, data_type: LaserScan, topic: topic_name, marking: true, clearing: true}
+observation_sources: scan
+# scan: {sensor_frame: base_scan, data_type: LaserScan, topic: scan, marking: true, clearing: true}
+scan: {sensor_frame: base_laser, data_type: LaserScan, topic: /sick_safetyscanners/scan, marking: true, clearing: true}

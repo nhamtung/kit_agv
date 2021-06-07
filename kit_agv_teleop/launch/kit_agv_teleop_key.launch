@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- turtlebot3_teleop_key already has its own built in velocity smoother -->
+  <node pkg="kit_agv_teleop" type="kit_agv_teleop_key.py" name="kit_agv_teleop_keyboard"  output="screen">
+  </node>
+</launch>

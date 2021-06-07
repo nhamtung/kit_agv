@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Arguments -->
+  <arg name="sensor_ip" default="192.168.1.12"/>
+  <arg name="host_ip" default="192.168.1.255"/>
+  <arg name="angle_start" default="-1.9"/>    <!-- Start angle of scan in radians, if both start and end angle are equal, all angels are regarded  -->
+  <arg name="angle_end" default="1.9"/>      <!-- End angle of scan in radians, if both start and end angle are equal, all angels are regarded -->
+
+  <arg name="map_file" default="$(find kit_agv_navigation)/maps/map_709a1.yaml"/>
+  <arg name="open_rviz" default="true"/>
+  <arg name="move_forward_only" default="false"/>
+  
+  <arg name="port" default="/dev/ttyUSB0"/>
+
+  <!-- kit_agv -->
+  <include file="$(find kit_agv_bringup)/launch/kit_agv_robot.launch">
+    <arg name="sensor_ip" value="$(arg sensor_ip)"/>
+    <arg name="host_ip" value="$(arg host_ip)"/>
+    <arg name="angle_start" value="$(arg angle_start)"/>
+    <arg name="angle_end" value="$(arg angle_end)"/>
+  </include>
+  <include file="$(find kit_agv_bringup)/launch/kit_agv_remote.launch"/>
+
+  <!-- Map server -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+
+  <!-- AMCL -->
+  <include file="$(find kit_agv_navigation)/launch/amcl.launch"/>
+
+  <!-- move_base -->
+  <include file="$(find kit_agv_navigation)/launch/move_base.launch">
+    <arg name="move_forward_only" value="$(arg move_forward_only)"/>
+  </include>
+
+  <!-- Laser Odom -->
+  <node pkg="laser_scan_matcher" type="laser_scan_matcher_node" name="laser_scan_matcher_node" output="screen"/>
+  <node pkg="joint_state_publisher" type="joint_state_publisher" respawn="false" name="joint_state_publisher" output="screen"/>
+
+  <!-- Motor Driver -->
+  <include file="$(find r2serial_driver)/launch/r2serial_driver.launch">
+    <arg name="port" value="$(arg port)"/>
+  </include>
+
+  <!-- rviz -->
+  <group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find kit_agv_navigation)/rviz/kit_agv_navigation.rviz"/>
+  </group>
+  
+</launch>

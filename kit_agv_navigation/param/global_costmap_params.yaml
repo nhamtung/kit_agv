@@ -1,0 +1,16 @@
+global_costmap:
+  # INFO: He truc toa do co dinh khi chay global_costmap(fixed frame in RVIZ)
+  global_frame: map
+  # INFO: He truc toa do cua robot
+  robot_base_frame: base_footprint
+  # robot_base_frame: base_link
+
+  # INFO: Tan so (Hz) update costmap
+  update_frequency: 10.0
+  publish_frequency: 10.0
+  transform_tolerance: 0.5
+  # transform_tolerance: 0.1
+
+  # INFO: Lua chon co su dung map hay khong (map server)
+  static_map: true
+ 

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Arguments -->
+  <arg name="sensor_ip" default="192.168.3.3"/>
+  <arg name="host_ip" default="192.168.3.5"/>
+  <arg name="angle_start" default="-1.9"/>    <!-- Start angle of scan in radians, if both start and end angle are equal, all angels are regarded  -->
+  <arg name="angle_end" default="1.9"/>      <!-- End angle of scan in radians, if both start and end angle are equal, all angels are regarded -->
+  
+  <arg name="slam_methods" default="hector" doc="slam type [gmapping, cartographer, hector, karto, frontier_exploration]"/>
+  <arg name="open_rviz" default="true"/>
+  <!-- <arg name="open_rviz" default="false"/> -->
+  
+  <arg name="port" default="/dev/ttyUSB0"/>
+
+  <!-- Kit_agv -->
+  <include file="$(find kit_agv_bringup)/launch/kit_agv_robot.launch">
+    <arg name="sensor_ip" value="$(arg sensor_ip)"/>
+    <arg name="host_ip" value="$(arg host_ip)"/>
+    <arg name="angle_start" value="$(arg angle_start)"/>
+    <arg name="angle_end" value="$(arg angle_end)"/>
+  </include>
+  <include file="$(find kit_agv_bringup)/launch/kit_agv_remote.launch"/>
+
+  <!-- TF -->
+  <include file="$(find kit_agv_slam)/launch/kit_agv_tf.launch"/>
+
+  <!-- SLAM: Gmapping, Cartographer, Hector, Karto, Frontier_exploration, RTAB-Map -->
+  <include file="$(find kit_agv_slam)/launch/kit_agv_$(arg slam_methods).launch"/>
+
+  <node pkg="joint_state_publisher" type="joint_state_publisher" respawn="false" name="joint_state_publisher" output="screen"/>
+
+  <!-- WebServer -->
+  <!-- <include file="$(find webServer)/launch/kit_agv_webserver.launch"/> -->
+  
+  <!-- Motor Driver -->
+  <!-- <include file="$(find r2serial_driver)/launch/r2serial_driver.launch">
+    <arg name="port" value="$(arg port)"/>
+  </include> -->
+
+  <!-- rviz -->
+  <group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find kit_agv_slam)/rviz/kit_agv_$(arg slam_methods).rviz"/>
+  </group>
+</launch>

@@ -1,0 +1,76 @@
+<html>
+
+<head>
+    <!-- Bootstrap -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/> -->
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" media="screen" crossorigin="anonymous"/>
+
+    <!-- ROS stuff -->
+    <!-- <script type="text/javascript" src="https://static.robotwebtools.org/EaselJS/current/easeljs.min.js"></script> -->
+    <!-- <script type="text/javascript" src="https://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script> -->
+    <!-- <script type="text/javascript" src="https://static.robotwebtools.org/roslibjs/current/roslib.min.js"> </script> -->
+    <!-- <script type="text/javascript" src="https://static.robotwebtools.org/ros2djs/current/ros2d.min.js"> </script> -->
+
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/easeljs.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/eventemitter2.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/roslib.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/ros2d.js') }}"></script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/NavGoal.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/NavPath.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/PoseAndTrace.js') }}"></script>
+
+    <!-- Vuejs -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"> </script> -->
+    <script src="{{ url_for('static', filename='lib/vue.js') }}"></script>
+</head>
+
+<body>
+    <div id="app" class="container" style="padding-left: 0px;padding-right: 0px;margin-left: 0px;margin-right: 0px;">
+        <div class="row" style="margin-left: -0px;margin-right: -0px;">
+            <div class="col-md-3">
+                <div class="col-md-12 col-sm-6 text-left">
+                    <br><br>
+                    <label>ROSBridge address: </label>
+                    <input type="text" v-model="rosbridge_address" />
+                    <br><br>
+                    <button :disabled="loading" class="btn btn-danger" @click="disconnect" v-if="connected">Connected!</button>
+                    <button :disabled="loading" class="btn btn-success" @click="connect" v-else>Connect!</button>
+                    <br>
+                    <p class="text-danger" v-if="!connected">Not connected!</p>
+                    <p class="text-success" v-if="connected">Connected!</p>
+
+                    <div>
+                        <label>dataShow1: </lable>
+                        <input type="text" v-model="dataShow1" />
+                        <br>
+                        <label>dataShow2: </lable>
+                        <input type="text" v-model="dataShow2" />
+                    </div>
+                </div>
+                <div>
+                    <label>Map Name: </lable>
+                    <input type="text" v-model="mapName"/>
+                    <button class="btn btn-success" @click="SaveMap">Save Map</button>
+                    <p class="text-success" v-if="isSaved">Saved Map!</p>
+                </div>
+            </div>
+            <div class="col-md-8" >
+                <span class="col-md-6 col-sm-6" style="overflow:auto;">
+                    <div class="row">
+                        <!-- 1st row -->
+                        <div class="col-md-12 text-center my-2">
+                            <div id="map"></div>
+                        </div>
+                    </div>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/mapping.js') }}"></script>
+
+</body>
+
+</html>

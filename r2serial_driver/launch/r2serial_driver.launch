@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="port"             default="/dev/ttyUSB0" />
+  <arg name="baud"             default="19200" />
+
+  <node pkg="r2serial_driver" type="r2serial_driver" name="r2serial0" args="0 $(arg port) $(arg baud)" output="screen" >
+  <remap from="ucCommand" to="uc0Command" />
+  <remap from="ucResponse" to="uc0Response" />
+  </node>
+ 
+  <node pkg="r2serial_driver" type="MD200_control" name="MD200_control" output="screen" />
+ 
+</launch>
+
+
